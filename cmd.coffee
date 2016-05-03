@@ -14,7 +14,7 @@ writeError = (msg, exitCode)->
 
 ## Options
 
-commander.version '0.0.1'
+commander.version '0.0.0'
 
 commander.arguments '<source> <destination> <speed-limit>'
 
