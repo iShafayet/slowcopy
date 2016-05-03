@@ -3,7 +3,7 @@ fs = require 'fs'
 
 { iterate } = require './en-stl.coffee'
 
-@makeFileOfSizeInMBytes = (inputFilePath, sizeInMBytes, cbfn)->
+@makeFileOfSizeInMBytes = makeFileOfSizeInMBytes = (inputFilePath, sizeInMBytes, cbfn)->
 
   stream = fs.createWriteStream inputFilePath
 
@@ -19,6 +19,22 @@ fs = require 'fs'
 
   stream.on 'finish', =>
     cbfn()
+
+
+@makeFileOfSizeInMBytesUnlessFileExists = (inputFilePath, sizeInMBytes, cbfn)->
+
+  fs.stat inputFilePath, (err, stats)->
+    if err
+      if err.code is 'ENOENT'
+        return makeFileOfSizeInMBytes inputFilePath, sizeInMBytes, cbfn
+      else
+        throw err 
+
+    if stats.size is sizeInMBytes * 1024 * 1024
+      return cbfn()
+    else
+      return makeFileOfSizeInMBytes inputFilePath, sizeInMBytes, cbfn
+
 
 hashFiles = require 'hash-files'
 
