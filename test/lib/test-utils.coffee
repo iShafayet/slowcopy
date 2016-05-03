@@ -53,6 +53,6 @@ hashFiles = require 'hash-files'
     hashFiles options, (err, hash2)->
       throw err if err
 
-      return hash1 is hash2
+      return cbfn (hash1 is hash2)
 
 
