@@ -1,7 +1,7 @@
 {
   "name": "slowcopy",
   "version": "0.0.0",
-  "description": "A command line utility to copy files with speed limit.",
+  "description": "A command line utility to copy a file at a limited speed.",
   "main": "index-runner.js",
   "scripts": {
     "test": "mocha --compilers coffee:coffee-script/register"
