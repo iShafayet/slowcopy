@@ -8,6 +8,14 @@ class Slowcopy extends EventEmitter
   constructor: (@inputFilePath, @outputFilePath, @bytesPerSecond)->
     @bytesPerSecond = Math.floor @bytesPerSecond
 
+  _gatherInputFileStats: (cbfn)->
+    fslib.stat @inputFilePath, (err, stats)=>
+      return @emit err if err
+      @totalFileSizeInBytes = stats.size
+      return cbfn()
+
+  copy: ->
+    @_gatherInputFileStats =>
 
 
 @Slowcopy = Slowcopy  
