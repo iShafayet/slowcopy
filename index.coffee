@@ -28,11 +28,21 @@ class Slowcopy extends EventEmitter
       @writeStream.end()
       @emit 'end'
 
+  _generateWriteStream: ->
+    @writeStream = fslib.createWriteStream @outputFilePath
+
+    @writeStream.on 'error', (err)=>
+      @emit 'error', err
+
+    @writeStream.on 'end', =>
+      @emit 'write-end'
+
   copy: ->
     @_gatherInputFileStats =>
       @_calculateUpperLimits()
 
       @_generateReadStream()
+      @_generateWriteStream()
 
 
 @Slowcopy = Slowcopy  
