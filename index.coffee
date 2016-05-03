@@ -14,8 +14,13 @@ class Slowcopy extends EventEmitter
       @totalFileSizeInBytes = stats.size
       return cbfn()
 
+  _calculateUpperLimits: ->
+    @bytesPerHundredMilisecond = Math.floor (@bytesPerSecond / 10)
+    @carryBytes = @bytesPerSecond - (10 * @bytesPerHundredMilisecond)
+
   copy: ->
     @_gatherInputFileStats =>
+      @_calculateUpperLimits()
 
 
 @Slowcopy = Slowcopy  
