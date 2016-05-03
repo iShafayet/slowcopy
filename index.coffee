@@ -37,6 +37,32 @@ class Slowcopy extends EventEmitter
     @writeStream.on 'end', =>
       @emit 'write-end'
 
+  _readExpectedBytesOrRemainingBytes: (bytesToRead, cbfn)->
+    bytesLeftToRead = bytesToRead
+    bytes = null
+
+    readIfReadable = =>
+      chunk = @readStream.read bytesLeftToRead
+      chunk = @readStream.read() if chunk is null
+      if chunk is null
+        return cbfn bytes
+
+      @writeStream.write chunk
+
+      bytesLeftToRead -= chunk.length
+      if bytes is null
+        bytes = chunk
+      else
+        bytes = Buffer.concat [ bytes, chunk ]
+
+      if bytesLeftToRead is 0
+        return cbfn bytes
+      else
+        @readStream.once 'readable', => 
+          readIfReadable()
+
+    readIfReadable()
+
   copy: ->
     @_gatherInputFileStats =>
       @_calculateUpperLimits()
