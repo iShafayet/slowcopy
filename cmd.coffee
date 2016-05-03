@@ -16,6 +16,10 @@ writeError = (msg, exitCode)->
 
 commander.version '0.0.1'
 
+commander.arguments '<source> <destination> <speed-limit>'
+
+commander.description 'A command line utility to copy a file at a limited speed.'
+
 commander.option '-f, --force', 'Force over-write if destination already exists'
 
 commander.option '-q, --quiet', 'No non-error output'
