@@ -95,5 +95,10 @@ class Slowcopy extends EventEmitter
       @_generateReadStream()
       @_generateWriteStream()
 
+      @nonCarryReadCount = 0
+      @bytesReadTotal = 0
+
+      @readStream.once 'readable', =>
+        @_readingLoopStep()
 
 @Slowcopy = Slowcopy  
