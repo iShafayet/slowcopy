@@ -63,6 +63,31 @@ class Slowcopy extends EventEmitter
 
     readIfReadable()
 
+  _readingLoopStep: ->    
+    bytesToRead = @bytesPerHundredMilisecond
+    if @nonCarryReadCount is 9
+      @nonCarryReadCount = 0
+      bytesToRead += @carryBytes
+    else
+      @nonCarryReadCount += 1
+
+    timeStampBeforeReading = (new Date).getTime()
+    @_readExpectedBytesOrRemainingBytes bytesToRead, (bytes)=>
+      if bytes is null
+        'pass'
+      else
+        @bytesReadTotal += bytes.length
+        if @nonCarryReadCount is 9
+          @emit 'progress', @bytesReadTotal
+
+        timeStampAfterReading = (new Date).getTime()
+        timeDiff = timeStampAfterReading - timeStampBeforeReading
+        timeToWait = (if timeDiff > 100 then 0 else (100 - timeDiff))
+        
+        fn = =>
+          @_readingLoopStep()
+        setTimeout fn, timeToWait
+
   copy: ->
     @_gatherInputFileStats =>
       @_calculateUpperLimits()
