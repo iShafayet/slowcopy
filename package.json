@@ -1,0 +1,38 @@
+{
+  "name": "slowcopy",
+  "version": "0.0.0",
+  "description": "A command line utility to copy files with speed limit.",
+  "main": "index-runner.js",
+  "scripts": {
+    "test": "mocha --compilers coffee:coffee-script/register"
+  },
+  "bin": {
+    "slowcopy": "cmd-runner.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iShafayet/slowcopy.git"
+  },
+  "keywords": [
+    "file",
+    "copy",
+    "utility",
+    "slow",
+    "speed"
+  ],
+  "author": "Sayem Shafayet <ishafayet@gmail.com> (http://ishafayet.me/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/iShafayet/slowcopy/issues"
+  },
+  "homepage": "https://github.com/iShafayet/slowcopy",
+  "dependencies": {
+    "coffee-script": "^1.10.0",
+    "commander": "^2.9.0"
+  },
+  "devDependencies": {
+    "chai": "^3.3.0",
+    "mocha": "^2.3.3"
+  },
+  "private": false
+}
