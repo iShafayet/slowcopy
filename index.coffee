@@ -71,7 +71,6 @@ class Slowcopy extends EventEmitter
     else
       @nonCarryReadCount += 1
 
-    timeStampBeforeReading = (new Date).getTime()
     @_readExpectedBytesOrRemainingBytes bytesToRead, (bytes)=>
       if bytes is null
         'pass'
@@ -80,15 +79,18 @@ class Slowcopy extends EventEmitter
         if @nonCarryReadCount is 9
           @emit 'progress', @bytesReadTotal
 
-        timeStampAfterReading = (new Date).getTime()
-        timeDiff = timeStampAfterReading - timeStampBeforeReading
+        timeDiff = (new Date).getTime() - (@copyStartTimeStamp + (@stepCount * 100))
         timeToWait = (if timeDiff > 100 then 0 else (100 - timeDiff))
+        @stepCount += 1
         
         fn = =>
           @_readingLoopStep()
         setTimeout fn, timeToWait
 
   copy: ->
+
+    @copyStartTimeStamp = (new Date).getTime()
+
     @_gatherInputFileStats =>
       @_calculateUpperLimits()
 
@@ -97,6 +99,7 @@ class Slowcopy extends EventEmitter
 
       @nonCarryReadCount = 0
       @bytesReadTotal = 0
+      @stepCount = 0
 
       @readStream.once 'readable', =>
         @_readingLoopStep()
