@@ -18,9 +18,21 @@ class Slowcopy extends EventEmitter
     @bytesPerHundredMilisecond = Math.floor (@bytesPerSecond / 10)
     @carryBytes = @bytesPerSecond - (10 * @bytesPerHundredMilisecond)
 
+  _generateReadStream: ->
+    @readStream = fslib.createReadStream @inputFilePath
+
+    @readStream.on 'error', (err)=>
+      @emit 'error', err
+
+    @readStream.on 'end', =>
+      @writeStream.end()
+      @emit 'end'
+
   copy: ->
     @_gatherInputFileStats =>
       @_calculateUpperLimits()
+
+      @_generateReadStream()
 
 
 @Slowcopy = Slowcopy  
