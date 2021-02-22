@@ -1,7 +1,12 @@
 # slowcopy
-A command line utility to copy a file at a limited speed.
+A command line utility to copy a file at a limited speed. Useful for server reliability benchmarking and for preventing overheat in high-bandwidth/high-throughput storage solutions.
 
+# Installation
 
+```bash
+npm install node-astm
+```
+# API & Usage
 
 ```
   Usage: slowcopy [options] <source> <destination> <speed-limit>
@@ -15,3 +20,9 @@ A command line utility to copy a file at a limited speed.
     -f, --force    Force over-write if destination already exists
     -q, --quiet    No non-error output
 ```
+
+
+# LICENCE
+
+[MIT](LICENSE)
+
