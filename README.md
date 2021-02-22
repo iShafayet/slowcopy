@@ -4,7 +4,7 @@ A command line utility to copy a file at a limited speed. Useful for server reli
 # Installation
 
 ```bash
-npm install node-astm
+npm install -g slowcopy
 ```
 # API & Usage
 
